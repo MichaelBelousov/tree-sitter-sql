@@ -20,6 +20,7 @@ struct Language : public Napi::ObjectWrap<Language> {
     exports["Language"] = wrappedCtor;
     Constructor() = Napi::Persistent(wrappedCtor);
     Constructor().SuppressDestruct();
+    tree_sitter_sql();
   }
 };
 
