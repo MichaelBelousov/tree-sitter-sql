@@ -4,6 +4,8 @@
   "description": "SQL grammar fom tree-sitter",
   "main": "bindings/node",
   "scripts": {
+    "install": "node-gyp-build",
+    "build": "node-gyp rebuild",
     "test": "tree-sitter generate && tree-sitter test",
     "gen": "tree-sitter generate",
     "hl": "tree-sitter highlight",
@@ -25,6 +27,10 @@
     "nan": "^2.14.2"
   },
   "devDependencies": {
+    "node-addon-api": "^4.3.0",
+    "node-gyp": "^8.4.1",
+    "node-gyp-build": "^4.3.0",
+    "prebuildify": "^5.0.0",
     "prettier": "^2.4.1",
     "tree-sitter-cli": "^0.20.0"
   },

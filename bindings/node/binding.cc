@@ -1,28 +1,33 @@
 #include "tree_sitter/parser.h"
 #include <node.h>
-#include "nan.h"
-
-using namespace v8;
+#include "napi.h"
 
 extern "C" TSLanguage * tree_sitter_sql();
 
 namespace {
 
-NAN_METHOD(New) {}
+struct Language : public Napi::ObjectWrap<Language> {
+  TSLanguage* lang;
 
-void Init(Local<Object> exports, Local<Object> module) {
-  Local<FunctionTemplate> tpl = Nan::New<FunctionTemplate>(New);
-  tpl->SetClassName(Nan::New("Language").ToLocalChecked());
-  tpl->InstanceTemplate()->SetInternalFieldCount(1);
+  Language(const Napi::CallbackInfo& info) : Napi::ObjectWrap<Language>{info}, lang{tree_sitter_sql()} {}
+  static Napi::FunctionReference& Constructor() {
+    static Napi::FunctionReference ref;
+    return ref;
+  }
+  static void Init(Napi::Env env, Napi::Object exports) {
+    Napi::Function wrappedCtor = DefineClass(env, "Language", {});
+    wrappedCtor["name"] = Napi::String::New(env, "sql");
+    exports["Language"] = wrappedCtor;
+    Constructor() = Napi::Persistent(wrappedCtor);
+    Constructor().SuppressDestruct();
+  }
+};
 
-  Local<Function> constructor = Nan::GetFunction(tpl).ToLocalChecked();
-  Local<Object> instance = constructor->NewInstance(Nan::GetCurrentContext()).ToLocalChecked();
-  Nan::SetInternalFieldPointer(instance, 0, tree_sitter_sql());
-
-  Nan::Set(instance, Nan::New("name").ToLocalChecked(), Nan::New("sql").ToLocalChecked());
-  Nan::Set(module, Nan::New("exports").ToLocalChecked(), instance);
+Napi::Object Init(Napi::Env env, Napi::Object exports) {
+  Language::Init(env, exports);
+  return exports;
 }
 
-NODE_MODULE(tree_sitter_sql_binding, Init)
+NODE_API_MODULE(tree_sitter_sql_binding, Init)
 
 }  // namespace

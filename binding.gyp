@@ -3,7 +3,7 @@
     {
       "target_name": "tree_sitter_sql_binding",
       "include_dirs": [
-        "<!(node -e \"require('nan')\")",
+        '''<!(node -p "require('node-addon-api').include_dir")''',
         "src"
       ],
       "sources": [
@@ -13,7 +13,10 @@
       ],
       "cflags_c": [
         "-std=c99",
-      ]
+      ],
+      "defines": ["NAPI_CPP_EXCEPTIONS"],
+      "cflags!": ["-fno-exceptions"],
+      "cflags_cc!": ["-fno-exceptions"],
     }
   ]
 }
