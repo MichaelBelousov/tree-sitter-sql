@@ -5,7 +5,7 @@
   "main": "bindings/node",
   "scripts": {
     "install": "node-gyp-build",
-    "build": "node-gyp rebuild",
+    "build": "npm run gen && node-gyp rebuild",
     "test": "tree-sitter generate && tree-sitter test",
     "gen": "tree-sitter generate",
     "hl": "tree-sitter highlight",
