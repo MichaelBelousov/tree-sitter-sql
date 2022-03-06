@@ -8,6 +8,7 @@
     "build": "npm run gen && node-gyp rebuild",
     "build-compile-commands": "bear --append -- node-gyp build",
     "prebuild": "prebuildify --napi -t electron@13.5.2 -t node@14.7.0 --strip",
+    "prebuild-debug": "prebuildify --napi -t electron@13.5.2 -t node@14.7.0 --debug",
     "test": "tree-sitter generate && tree-sitter test",
     "gen": "tree-sitter generate",
     "hl": "tree-sitter highlight",
