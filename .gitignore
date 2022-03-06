@@ -3,3 +3,4 @@ tree-sitter-sql.wasm
 target/
 build/
 compile_commands.json
+prebuilds/
