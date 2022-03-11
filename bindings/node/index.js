@@ -13,7 +13,11 @@ function loadBindingsWithPreloads(pkg) {
   return result;
 }
 
-module.exports = loadBindingsWithPreloads(path.join(__dirname, "../.."));
+module.exports = process.env.IN_WEBPACK
+  ? require("node-gyp-build")(
+      path.join(__dirname, "node_modules/tree-sitter-sql"),
+    )
+  : loadBindingsWithPreloads(path.join(__dirname, "../.."));
 
 try {
   module.exports.nodeTypeInfo = require("../../src/node-types.json");
